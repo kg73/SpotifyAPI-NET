@@ -2,9 +2,9 @@
 
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
-    <id>SpotifyAPI.Web</id>
+    <id>Shearcode.SpotifyAPI.Web</id>
     <version>3.0.0</version>
-    <title>kg73.SpotifyAPI.Web</title>
+    <title>Shearcode.SpotifyAPI.Web</title>
     <authors>JohnnyCrazy</authors>
     <owners>JohnnyCrazy</owners>
     <licenseUrl>https://github.com/JohnnyCrazy/SpotifyAPI-NET/blob/master/LICENSE</licenseUrl>
