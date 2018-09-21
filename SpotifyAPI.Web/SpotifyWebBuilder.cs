@@ -7,10 +7,10 @@ using SpotifyAPI.Web.Models;
 
 namespace SpotifyAPI.Web
 {
-    /// <summary>
-    /// SpotifyAPI URL-Generator
-    /// </summary>
-    public class SpotifyWebBuilder
+	/// <summary>
+	/// SpotifyAPI URL-Generator
+	/// </summary>
+	public class SpotifyWebBuilder
     {
         public const string APIBase = "https://api.spotify.com/v1";
 
@@ -642,7 +642,10 @@ namespace SpotifyAPI.Web
         /// <remarks>AUTH NEEDED</remarks>
         public string GetPlaylist(string userId, string playlistId, string fields = "", string market = "")
         {
-            StringBuilder builder = new StringBuilder(APIBase + "/users/" + userId + "/playlists/" + playlistId);
+            StringBuilder builder = string.IsNullOrEmpty(userId)
+                ? new StringBuilder(APIBase + "/playlists/" + playlistId)
+                : new StringBuilder(APIBase + "/users/" + userId + "/playlists/" + playlistId);
+
             builder.Append("?fields=" + fields);
             if (!string.IsNullOrEmpty(market))
                 builder.Append("&market=" + market);
@@ -666,7 +669,10 @@ namespace SpotifyAPI.Web
         public string GetPlaylistTracks(string userId, string playlistId, string fields = "", int limit = 100, int offset = 0, string market = "")
         {
             limit = Math.Min(limit, 100);
-            StringBuilder builder = new StringBuilder(APIBase + "/users/" + userId + "/playlists/" + playlistId + "/tracks");
+            StringBuilder builder = string.IsNullOrEmpty(userId)
+                ? new StringBuilder(APIBase + "/playlists/" + playlistId + "/tracks")
+                : new StringBuilder(APIBase + "/users/" + userId + "/playlists/" + playlistId + "/tracks");
+
             builder.Append("?fields=" + fields);
             builder.Append("&limit=" + limit);
             builder.Append("&offset=" + offset);
@@ -716,7 +722,9 @@ namespace SpotifyAPI.Web
         /// <remarks>AUTH NEEDED</remarks>
         public string ReplacePlaylistTracks(string userId, string playlistId)
         {
-            return $"{APIBase}/users/{userId}/playlists/{playlistId}/tracks";
+            return string.IsNullOrEmpty(userId) 
+                ? $"{APIBase}/playlists/{playlistId}/tracks" 
+                : $"{APIBase}/users/{userId}/playlists/{playlistId}/tracks";
         }
 
         /// <summary>
@@ -732,7 +740,9 @@ namespace SpotifyAPI.Web
         /// <remarks>AUTH NEEDED</remarks>
         public string RemovePlaylistTracks(string userId, string playlistId, List<DeleteTrackUri> uris)
         {
-            return $"{APIBase}/users/{userId}/playlists/{playlistId}/tracks";
+            return string.IsNullOrEmpty(userId) 
+                ? $"{APIBase}/playlists/{playlistId}/tracks" 
+                : $"{APIBase}/users/{userId}/playlists/{playlistId}/tracks";
         }
 
         /// <summary>
@@ -746,9 +756,12 @@ namespace SpotifyAPI.Web
         /// <remarks>AUTH NEEDED</remarks>
         public string AddPlaylistTracks(string userId, string playlistId, List<string> uris, int? position = null)
         {
+            var baseUrl = string.IsNullOrEmpty(userId) 
+                ? $"{APIBase}/playlists/{playlistId}/tracks"
+                : $"{APIBase}/users/{userId}/playlists/{playlistId}/tracks";
             if (position == null)
-                return $"{APIBase}/users/{userId}/playlists/{playlistId}/tracks";
-            return $"{APIBase}/users/{userId}/playlists/{playlistId}/tracks?position={position}";
+                return baseUrl;
+            return $"{baseUrl}?position={position}";
         }
 
         /// <summary>
@@ -760,7 +773,9 @@ namespace SpotifyAPI.Web
         /// <remarks>AUTH NEEDED</remarks>
         public string ReorderPlaylist(string userId, string playlistId)
         {
-            return $"{APIBase}/users/{userId}/playlists/{playlistId}/tracks";
+            return string.IsNullOrEmpty(userId) 
+                ? $"{APIBase}/playlists/{playlistId}/tracks" 
+                : $"{APIBase}/users/{userId}/playlists/{playlistId}/tracks";
         }
 
         #endregion Playlists
