@@ -1,16 +1,16 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using SpotifyAPI.Web.Models;
 
 namespace SpotifyAPI.Web
 {
-    internal class SpotifyWebClient : IClient
+	public class SpotifyWebClient : IClient
     {
         public JsonSerializerSettings JsonSettings { get; set; }
         private readonly Encoding _encoding = Encoding.UTF8;
@@ -20,6 +20,11 @@ namespace SpotifyAPI.Web
         {
             HttpClientHandler clientHandler = CreateClientHandler(proxyConfig);
             _client = new HttpClient(clientHandler);
+        }
+
+        public SpotifyWebClient(HttpClient httpClient)
+        {
+            _client = httpClient;
         }
 
         public Tuple<ResponseInfo, string> Download(string url, Dictionary<string, string> headers = null)

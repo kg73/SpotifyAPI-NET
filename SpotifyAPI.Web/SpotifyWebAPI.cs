@@ -1,21 +1,21 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using SpotifyAPI.Web.Enums;
-using SpotifyAPI.Web.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using SpotifyAPI.Web.Enums;
+using SpotifyAPI.Web.Models;
 
 namespace SpotifyAPI.Web
 {
-    // ReSharper disable once InconsistentNaming
-    public sealed class SpotifyWebAPI : IDisposable
+	// ReSharper disable once InconsistentNaming
+	public sealed class SpotifyWebAPI : IDisposable
     {
         private readonly SpotifyWebBuilder _builder;
 
-        public SpotifyWebAPI() : this(null)
+        public SpotifyWebAPI() : this(proxyConfig: null)
         {
         }
 
@@ -31,6 +31,18 @@ namespace SpotifyAPI.Web
                         NullValueHandling = NullValueHandling.Ignore,
                         TypeNameHandling = TypeNameHandling.All
                     }
+            };
+        }
+
+        public SpotifyWebAPI(SpotifyWebClient spotifyWebClient)
+        {
+            _builder = new SpotifyWebBuilder();
+            UseAuth = true;
+            WebClient = spotifyWebClient;
+            WebClient.JsonSettings = new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                TypeNameHandling = TypeNameHandling.All
             };
         }
 
